@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5F5F7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <title>Rubik Case Studio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <rect x="2" y="2" width="9" height="9" rx="2.2" fill="#FACC15"/>
+            <rect x="13" y="2" width="9" height="9" rx="2.2" fill="#DC2626"/>
+            <rect x="2" y="13" width="9" height="9" rx="2.2" fill="#2563EB"/>
+            <rect x="13" y="13" width="9" height="9" rx="2.2" fill="#16A34A"/>
+          </svg>
+        </span>
+        <span class="brand-name">Rubik Case Studio</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="Chuyển giao diện sáng / tối" title="Sáng / Tối">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Left Inspector -->
+    <aside class="inspector" aria-label="Bảng điều khiển">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Công thức</h2>
+          <div class="segmented" role="group" aria-label="Chế độ chạy công thức">
+            <button type="button" class="seg-btn active" data-alg-mode="invert" title="Chạy ngược công thức để tạo case cần giải">Tạo case</button>
+            <button type="button" class="seg-btn" data-alg-mode="apply" title="Áp dụng trực tiếp từ trạng thái đã giải">Áp dụng</button>
+          </div>
+        </div>
+        <div class="input-wrap">
+          <input
+            id="algInput"
+            type="text"
+            class="mono-input"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder="VD: R U R' U R U' R' U R U2 R'"
+            value="R U R' U R U' R' U R U2 R'"
+          />
+          <button id="clearAlgBtn" class="clear-btn" type="button" aria-label="Xóa công thức" title="Xóa">&times;</button>
+        </div>
+        <div class="row-controls">
+          <div class="field">
+            <label for="presetSelect">Mẫu nhanh (COLL)</label>
+            <select id="presetSelect" class="select-input">
+              <option value="">Chọn case mẫu…</option>
+            </select>
+          </div>
+          <div class="field field-sm">
+            <label for="maskSelect">Bộ lọc ô</label>
+            <select id="maskSelect" class="select-input">
+              <option value="coll" selected>COLL (ẩn cạnh)</option>
+              <option value="full">Đầy đủ (PLL/ZBLL)</option>
+              <option value="oll">OLL (chỉ vàng)</option>
+            </select>
+          </div>
+        </div>
+        <div class="quick-bar">
+          <button type="button" class="pill-btn" data-auf="U'">U'</button>
+          <button type="button" class="pill-btn" data-auf="U">U</button>
+          <button type="button" class="pill-btn" data-auf="U2">U2</button>
+          <button type="button" class="pill-btn" id="resetCubeBtn">Đặt lại</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Tô màu trực tiếp</h2>
+          <span class="hint-text">Chạm vào ô trên hình</span>
+        </div>
+        <div class="palette" id="palette" role="radiogroup" aria-label="Bảng màu sticker">
+          <button type="button" class="swatch active" data-color="Y" style="--sw:#FFEE00" aria-label="Vàng" title="Vàng (U)"></button>
+          <button type="button" class="swatch" data-color="B" style="--sw:#1D4ED8" aria-label="Xanh dương" title="Xanh dương (F)"></button>
+          <button type="button" class="swatch" data-color="R" style="--sw:#D50000" aria-label="Đỏ" title="Đỏ (R)"></button>
+          <button type="button" class="swatch" data-color="G" style="--sw:#00A800" aria-label="Xanh lá" title="Xanh lá (B)"></button>
+          <button type="button" class="swatch" data-color="O" style="--sw:#F57C00" aria-label="Cam" title="Cam (L)"></button>
+          <button type="button" class="swatch" data-color="W" style="--sw:#FFFFFF" aria-label="Trắng" title="Trắng (D)"></button>
+          <button type="button" class="swatch" data-color="X" style="--sw:#737373" aria-label="Xám ẩn" title="Xám (ẩn ô)"></button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Xuất ảnh nền trong suốt</h2>
+        </div>
+        <div class="row-controls">
+          <div class="field">
+            <label for="fileNameInput">Tên file</label>
+            <input id="fileNameInput" type="text" class="text-input" value="rubik-case" spellcheck="false" />
+          </div>
+          <div class="field field-sm">
+            <label for="sizeSelect">Độ phân giải</label>
+            <select id="sizeSelect" class="select-input">
+              <option value="512">512 px</option>
+              <option value="1024" selected>1024 px</option>
+              <option value="2048">2048 px</option>
+            </select>
+          </div>
+        </div>
+        <div class="export-all-row">
+          <button id="downloadBothPngBtn" type="button" class="primary-btn">Tải cả 2 PNG trong suốt</button>
+          <button id="downloadBothSvgBtn" type="button" class="secondary-btn">Tải cả 2 SVG</button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Right Preview Stage -->
+    <section class="stage" aria-label="Xem trước 2 phong cách">
+      <div class="stage-grid">
+        <!-- Style 1: Rounded Florian -->
+        <article class="preview-card">
+          <div class="preview-head">
+            <div>
+              <h3>Kiểu 1 · Rounded</h3>
+              <p class="sub">Bo góc trong kiểu speedcube</p>
+            </div>
+            <span class="badge">PNG / SVG · Alpha</span>
+          </div>
+          <div class="checker-stage" id="stageRounded" title="Click vào bất kỳ ô nào để tô màu"></div>
+          <div class="card-actions">
+            <button type="button" class="action-btn action-primary" data-dl="rounded-png">Tải PNG</button>
+            <button type="button" class="action-btn" data-dl="rounded-svg">Tải SVG</button>
+            <button type="button" class="action-btn" data-copy="rounded">Sao chép</button>
+          </div>
+        </article>
+
+        <!-- Style 2: Classic Trapezoid -->
+        <article class="preview-card">
+          <div class="preview-head">
+            <div>
+              <h3>Kiểu 2 · Classic</h3>
+              <p class="sub">Viền hình thang chuẩn J Perm</p>
+            </div>
+            <span class="badge">PNG / SVG · Alpha</span>
+          </div>
+          <div class="checker-stage" id="stageClassic" title="Click vào bất kỳ ô nào để tô màu"></div>
+          <div class="card-actions">
+            <button type="button" class="action-btn action-primary" data-dl="classic-png">Tải PNG</button>
+            <button type="button" class="action-btn" data-dl="classic-svg">Tải SVG</button>
+            <button type="button" class="action-btn" data-copy="classic">Sao chép</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
